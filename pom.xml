@@ -31,7 +31,6 @@
 		<libsdisguises.version>9.1.1</libsdisguises.version>
 		<protocollib.version>4.2.0-SNAPSHOT</protocollib.version>
 		<battleArena.version>3.9.10.6.2</battleArena.version>
-		<bossbarapi.version>2.4.1</bossbarapi.version>
 		<barapi.version>3.4</barapi.version>
 		<titlemanager.version>2.0.0</titlemanager.version>
 
@@ -391,14 +390,6 @@
 			<groupId>mc.alk</groupId>
 			<artifactId>BattleArena</artifactId>
 			<version>${battleArena.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- BossBarAPI -->
-		<dependency>
-			<groupId>org.inventivetalent</groupId>
-			<artifactId>bossbarapi</artifactId>
-			<version>${bossbarapi.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
