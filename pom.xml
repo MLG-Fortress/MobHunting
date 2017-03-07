@@ -375,14 +375,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- MyPet -->
-		<dependency>
-			<groupId>de.keyle</groupId>
-			<artifactId>mypet</artifactId>
-			<version>${mypet.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- Worldguard -->
 		<dependency>
 			<groupId>com.sk89q.worldguard</groupId>
@@ -643,29 +635,6 @@
 					<artifactId>craftbukkit</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-
-		<!-- bStats.org -->
-		<dependency>
-			<groupId>org.bstats</groupId>
-			<artifactId>bstats-bukkit</artifactId>
-			<version>1.1</version>
-		</dependency>
-
-		<!-- MassiveCore / Factions -->
-		<dependency>
-			<groupId>com.massivecraft.massivecore.MassiveCore</groupId>
-			<artifactId>MassiveCore</artifactId>
-			<version>2.10.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/${massivecore.jar.version}</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.massivecraft.factions.Factions</groupId>
-			<artifactId>Factions</artifactId>
-			<version>2.10.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/${factions.jar.version}</systemPath>
 		</dependency>
 
 	</dependencies>
