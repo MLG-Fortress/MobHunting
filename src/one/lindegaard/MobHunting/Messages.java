@@ -398,6 +398,8 @@ public class Messages {
 	 * @param except
 	 */
 	public static void broadcast(String message, Player except) {
+		if (message.isEmpty())
+			return;
 		Iterator<Player> players = MobHunting.getMobHuntingManager().getOnlinePlayers().iterator();
 		while (players.hasNext()) {
 			Player player = players.next();
@@ -443,6 +445,8 @@ public class Messages {
 	 * @param args
 	 */
 	public static void playerBossbarMessage(Player player, String text, Object... args) {
+		if (text.isEmpty())
+			return;
 		if (BarAPICompat.isSupported()) {
 			BarAPICompat.setMessageTime(player, String.format(text, args), 5);
 		} else {
@@ -458,6 +462,8 @@ public class Messages {
 	 * @param message
 	 */
 	public static void playerActionBarMessage(final Player player, final String message) {
+		if (message.isEmpty())
+			return;
 		if (TitleManagerCompat.isSupported()) {
 			TitleManagerCompat.setActionBar(player, message);
 		} else if (ActionbarCompat.isSupported()) {
