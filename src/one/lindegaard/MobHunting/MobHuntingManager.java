@@ -65,11 +65,9 @@ import one.lindegaard.MobHunting.compatibility.ConquestiaMobsCompat;
 import one.lindegaard.MobHunting.compatibility.CustomMobsCompat;
 import one.lindegaard.MobHunting.compatibility.DisguisesHelper;
 import one.lindegaard.MobHunting.compatibility.EssentialsCompat;
-import one.lindegaard.MobHunting.compatibility.FactionsCompat;
 import one.lindegaard.MobHunting.compatibility.MinigamesLibCompat;
 import one.lindegaard.MobHunting.compatibility.MobArenaCompat;
 import one.lindegaard.MobHunting.compatibility.MobStackerCompat;
-import one.lindegaard.MobHunting.compatibility.MyPetCompat;
 import one.lindegaard.MobHunting.compatibility.MysteriousHalloweenCompat;
 import one.lindegaard.MobHunting.compatibility.MythicMobsCompat;
 import one.lindegaard.MobHunting.compatibility.PVPArenaCompat;
@@ -87,7 +85,6 @@ import one.lindegaard.MobHunting.modifier.ConquestiaBonus;
 import one.lindegaard.MobHunting.modifier.CoverBlown;
 import one.lindegaard.MobHunting.modifier.CriticalModifier;
 import one.lindegaard.MobHunting.modifier.DifficultyBonus;
-import one.lindegaard.MobHunting.modifier.FactionWarZoneBonus;
 import one.lindegaard.MobHunting.modifier.FlyingPenalty;
 import one.lindegaard.MobHunting.modifier.FriendleFireBonus;
 import one.lindegaard.MobHunting.modifier.GrindingPenalty;
@@ -278,8 +275,6 @@ public class MobHuntingManager implements Listener {
 		mHuntingModifiers.add(new CoverBlown());
 		mHuntingModifiers.add(new CriticalModifier());
 		mHuntingModifiers.add(new DifficultyBonus());
-		if (FactionsCompat.isSupported())
-			mHuntingModifiers.add(new FactionWarZoneBonus());
 		mHuntingModifiers.add(new FlyingPenalty());
 		mHuntingModifiers.add(new FriendleFireBonus());
 		mHuntingModifiers.add(new GrindingPenalty());
@@ -649,11 +644,7 @@ public class MobHuntingManager implements Listener {
 		} else
 			info.mele = true;
 
-		if (MyPetCompat.isMyPet(damager)) {
-			cause = MyPetCompat.getMyPetOwner(damager);
-			info.mele = false;
-			info.wolfAssist = true;
-		} else if (damager instanceof Wolf && ((Wolf) damager).isTamed()
+		if (damager instanceof Wolf && ((Wolf) damager).isTamed()
 				&& ((Wolf) damager).getOwner() instanceof Player) {
 			cause = (Player) ((Wolf) damager).getOwner();
 			info.mele = false;
@@ -747,7 +738,7 @@ public class MobHuntingManager implements Listener {
 		Player killer = event.getEntity().getKiller();
 
 		// Killer is not a player and not a MyPet.
-		if (killer == null && !MyPetCompat.isKilledByMyPet(killed)) {
+		if (killer == null) {
 			// Messages.debug("KillBlocked: Killer is null and Killed is not
 			// killed by MyPet");
 			return;
@@ -770,7 +761,7 @@ public class MobHuntingManager implements Listener {
 
 		// WorldGuard Compatibility
 		if (WorldGuardCompat.isSupported()) {
-			if ((killer != null || MyPetCompat.isMyPet(killer)) && !CitizensCompat.isNPC(killer)) {
+			if ((killer != null && !CitizensCompat.isNPC(killer))) {
 				if (!WorldGuardHelper.isAllowedByWorldGuard(killer, killed, DefaultFlag.MOB_DAMAGE, true)) {
 					Messages.debug("KillBlocked:(2) %s is hiding in WG region with mob-damage=DENY", killer.getName());
 					Messages.learn(killer, Messages.getString("mobhunting.learn.mob-damage-flag"));
@@ -805,32 +796,10 @@ public class MobHuntingManager implements Listener {
 			}
 		}
 
-		// Factions Compatibility - no reward when player are in SafeZone
-		if (FactionsCompat.isSupported()) {
-			if ((killer != null || MyPetCompat.isMyPet(killer)) && !CitizensCompat.isNPC(killer)) {
-				Player player = killer != null ? killer : MyPetCompat.getMyPetOwner(killer);
-				if (FactionsCompat.isInSafeZone(player)) {
-					Messages.debug("KillBlocked:(2) %s is hiding in Factions SafeZone", player.getName());
-					Messages.learn(killer, Messages.getString("mobhunting.learn.factions-safezone"));
-					if (MobHunting.getConfigManager().tryToCancelNaturalDrops) {
-						Messages.debug("Trying to remove natural drops");
-						cancelNaturalDrops = true;
-						event.getDrops().clear();
-					}
-					if (MobHunting.getConfigManager().tryToCancelXPDrops) {
-						Messages.debug("Trying to remove XP drops");
-						cancelXPDrops = true;
-						event.setDroppedExp(0);
-					}
-					return;
-				}
-			}
-		}
-
 		// MobHunting is Disabled in World
 		if (!MobHunting.getMobHuntingManager().isHuntEnabledInWorld(event.getEntity().getWorld())) {
 			if (WorldGuardCompat.isSupported()) {
-				if ((killer != null || MyPetCompat.isMyPet(killer)) && !CitizensCompat.isNPC(killer)) {
+				if ((killer != null && !CitizensCompat.isNPC(killer))) {
 					if (WorldGuardHelper.isAllowedByWorldGuard(killer, killed, WorldGuardHelper.getMobHuntingFlag(),
 							false)) {
 						Messages.debug("KillBlocked %s: Mobhunting disabled in world '%s'", killer.getName(),
@@ -1078,12 +1047,6 @@ public class MobHuntingManager implements Listener {
 			return;
 		}
 
-		// MyPet killed a mob - Assister is the Owner
-		if (MyPetCompat.isKilledByMyPet(killed) && MobHunting.getConfigManager().enableAssists == true) {
-			info.assister = MyPetCompat.getMyPetOwner(killed);
-			Messages.debug("MyPetAssitedKill: Pet owned by %s killed a %s", info.assister.getName(), mob.getName());
-		}
-
 		if (info.weapon == null)
 			info.weapon = new ItemStack(Material.AIR);
 
@@ -1134,19 +1097,6 @@ public class MobHuntingManager implements Listener {
 				// one mob to gain 4 x prize
 				if (data.getKillstreakLevel() != 0 && data.getKillstreakMultiplier() != 1)
 					Messages.playerActionBarMessage(killer,
-							ChatColor.RED + "" + ChatColor.ITALIC + Messages.getString("mobhunting.killstreak.ended"));
-				data.setKillStreak(0);
-			}
-		} else if (MyPetCompat.isKilledByMyPet(killed)) {
-			data = getHuntData(MyPetCompat.getMyPet(killed).getOwner().getPlayer());
-			if (cash != 0)
-				// Killstreak
-				handleKillstreak(MyPetCompat.getMyPet(killed).getOwner().getPlayer());
-			else {
-				// Killstreak ended. Players started to kill 4 chicken and the
-				// one mob to gain 4 x prize
-				if (data.getKillstreakLevel() != 0 && data.getKillstreakMultiplier() != 1)
-					Messages.playerActionBarMessage(MyPetCompat.getMyPet(killed).getOwner().getPlayer(),
 							ChatColor.RED + "" + ChatColor.ITALIC + Messages.getString("mobhunting.killstreak.ended"));
 				data.setKillStreak(0);
 			}
@@ -1596,7 +1546,7 @@ public class MobHuntingManager implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	private void bonusMobSpawn(CreatureSpawnEvent event) {
 		// Bonus Mob can't be Citizens and MyPet
-		if (CitizensCompat.isNPC(event.getEntity()) || MyPetCompat.isMyPet(event.getEntity()))
+		if (CitizensCompat.isNPC(event.getEntity()))
 			return;
 
 		if (event.getEntityType() == EntityType.ENDER_DRAGON)

@@ -28,7 +28,6 @@ import one.lindegaard.MobHunting.compatibility.ActionAnnouncerCompat;
 import one.lindegaard.MobHunting.compatibility.ActionBarAPICompat;
 import one.lindegaard.MobHunting.compatibility.ActionbarCompat;
 import one.lindegaard.MobHunting.compatibility.BarAPICompat;
-import one.lindegaard.MobHunting.compatibility.BossBarAPICompat;
 import one.lindegaard.MobHunting.compatibility.CitizensCompat;
 import one.lindegaard.MobHunting.compatibility.TitleAPICompat;
 import one.lindegaard.MobHunting.compatibility.TitleManagerCompat;
@@ -444,9 +443,7 @@ public class Messages {
 	 * @param args
 	 */
 	public static void playerBossbarMessage(Player player, String text, Object... args) {
-		if (BossBarAPICompat.isSupported()) {
-			BossBarAPICompat.addBar(player, String.format(text, args));
-		} else if (BarAPICompat.isSupported()) {
+		if (BarAPICompat.isSupported()) {
 			BarAPICompat.setMessageTime(player, String.format(text, args), 5);
 		} else {
 			player.sendMessage(

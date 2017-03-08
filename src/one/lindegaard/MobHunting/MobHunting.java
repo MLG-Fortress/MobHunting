@@ -32,14 +32,12 @@ import one.lindegaard.MobHunting.compatibility.ActionBarAPICompat;
 import one.lindegaard.MobHunting.compatibility.ActionbarCompat;
 import one.lindegaard.MobHunting.compatibility.BarAPICompat;
 import one.lindegaard.MobHunting.compatibility.BattleArenaCompat;
-import one.lindegaard.MobHunting.compatibility.BossBarAPICompat;
 import one.lindegaard.MobHunting.compatibility.CitizensCompat;
 import one.lindegaard.MobHunting.compatibility.CompatibilityManager;
 import one.lindegaard.MobHunting.compatibility.ConquestiaMobsCompat;
 import one.lindegaard.MobHunting.compatibility.CustomMobsCompat;
 import one.lindegaard.MobHunting.compatibility.DisguiseCraftCompat;
 import one.lindegaard.MobHunting.compatibility.EssentialsCompat;
-import one.lindegaard.MobHunting.compatibility.FactionsCompat;
 import one.lindegaard.MobHunting.compatibility.GringottsCompat;
 import one.lindegaard.MobHunting.compatibility.IDisguiseCompat;
 import one.lindegaard.MobHunting.compatibility.LibsDisguisesCompat;
@@ -48,7 +46,6 @@ import one.lindegaard.MobHunting.compatibility.MinigamesCompat;
 import one.lindegaard.MobHunting.compatibility.MinigamesLibCompat;
 import one.lindegaard.MobHunting.compatibility.MobArenaCompat;
 import one.lindegaard.MobHunting.compatibility.MobStackerCompat;
-import one.lindegaard.MobHunting.compatibility.MyPetCompat;
 import one.lindegaard.MobHunting.compatibility.MysteriousHalloweenCompat;
 import one.lindegaard.MobHunting.compatibility.MythicMobsCompat;
 import one.lindegaard.MobHunting.compatibility.PVPArenaCompat;
@@ -89,7 +86,6 @@ public class MobHunting extends JavaPlugin {
 	private static AchievementManager mAchievementManager;
 	private static BountyManager mBountyManager;
 	private static ParticleManager mParticleManager = new ParticleManager();
-	private static MetricsManager mMetricsManager;
 	private static PlayerSettingsManager mPlayerSettingsManager;
 	private static WorldGroup mWorldGroupManager;
 	private static ExtendedMobManager mExtendedMobManager;
@@ -159,11 +155,8 @@ public class MobHunting extends JavaPlugin {
 
 		registerPlugin(WorldEditCompat.class, "WorldEdit");
 		registerPlugin(WorldGuardCompat.class, "WorldGuard");
-		registerPlugin(FactionsCompat.class, "Factions");
 		registerPlugin(McMMOCompat.class, "mcMMO");
 		registerPlugin(ProtocolLibCompat.class, "ProtocolLib");
-
-		registerPlugin(MyPetCompat.class, "MyPet");
 
 		// Minigame plugins
 		registerPlugin(MinigamesCompat.class, "Minigames");
@@ -180,7 +173,6 @@ public class MobHunting extends JavaPlugin {
 
 		// Plugins used for presentation information in the BossBar, ActionBar,
 		// Title or Subtitle
-		registerPlugin(BossBarAPICompat.class, "BossBarAPI");
 		registerPlugin(TitleAPICompat.class, "TitleAPI");
 		registerPlugin(BarAPICompat.class, "BarAPI");
 		registerPlugin(TitleManagerCompat.class, "TitleManager");
@@ -245,11 +237,6 @@ public class MobHunting extends JavaPlugin {
 
 		// Check for new MobHuntig updates
 		Updater.hourlyUpdateCheck(getServer().getConsoleSender(), mConfig.updateCheck, false);
-
-		if (!getServer().getName().toLowerCase().contains("glowstone")) {
-			mMetricsManager = new MetricsManager(this);
-			mMetricsManager.startMetrics();
-		}
 
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 			public void run() {

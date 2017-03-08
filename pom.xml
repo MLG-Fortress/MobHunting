@@ -208,11 +208,11 @@
 			<url>http://repo.dmulloy2.net/content/groups/public/</url>
 		</repository>
 
-		<!-- mypet repository -->
-		<repository>
-			<id>mypet-repo1</id>
-			<url>https://nexus.keyle.de/content/groups/public/</url>
-		</repository>
+		<!-- mypet repository which is useless since it doesn't contain all of mypet's dependencies-->
+		<!--<repository>-->
+			<!--<id>mypet-repo1</id>-->
+			<!--<url>https://nexus.keyle.de/content/groups/public/</url>-->
+		<!--</repository>-->
 
 		<!-- LibsDisguises -->
 		<repository>

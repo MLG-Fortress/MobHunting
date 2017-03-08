@@ -6,7 +6,6 @@ import java.util.List;
 
 import one.lindegaard.MobHunting.compatibility.CitizensCompat;
 import one.lindegaard.MobHunting.compatibility.CustomMobsCompat;
-import one.lindegaard.MobHunting.compatibility.MyPetCompat;
 import one.lindegaard.MobHunting.compatibility.MysteriousHalloweenCompat;
 import one.lindegaard.MobHunting.compatibility.MythicMobsCompat;
 import one.lindegaard.MobHunting.compatibility.TARDISWeepingAngelsCompat;
@@ -1898,11 +1897,6 @@ public class ConfigManager extends AutoConfig {
 					MysteriousHalloweenCompat.getMysteriousHalloweenType(mob).name());
 			return 0;
 
-		} else if (MyPetCompat.isMyPet(mob)) {
-			Messages.debug("Tried to find a prize for a MyPet: %s (Owner=%s)", MyPetCompat.getMyPet(mob),
-					MyPetCompat.getMyPetOwner(mob));
-			return getPrice(mob, MobHunting.getConfigManager().wolfPrize);
-
 		} else {
 			if (Misc.isMC111OrNewer())
 				if (mob instanceof Llama)
@@ -2166,9 +2160,6 @@ public class ConfigManager extends AutoConfig {
 						.get(MysteriousHalloweenCompat.getMysteriousHalloweenType(mob).name()).getConsoleRunCommand();
 			return "";
 
-		} else if (MyPetCompat.isMyPet(mob)) {
-			return MobHunting.getConfigManager().wolfCmd;
-
 		} else {
 			if (Misc.isMC111OrNewer())
 				if (mob instanceof Llama)
@@ -2388,9 +2379,6 @@ public class ConfigManager extends AutoConfig {
 						.get(MysteriousHalloweenCompat.getMysteriousHalloweenType(mob).name()).getRewardDescription();
 			return "";
 
-		} else if (MyPetCompat.isMyPet(mob)) {
-			return MobHunting.getConfigManager().wolfCmdDesc;
-
 		} else {
 			if (Misc.isMC111OrNewer())
 				if (mob instanceof Llama)
@@ -2602,9 +2590,6 @@ public class ConfigManager extends AutoConfig {
 				return MysteriousHalloweenCompat.getMobRewardData()
 						.get(MysteriousHalloweenCompat.getMysteriousHalloweenType(killed).name()).getChance();
 			return 0;
-
-		} else if (MyPetCompat.isMyPet(killed)) {
-			return MobHunting.getConfigManager().wolfCmdRunChance;
 
 		} else {
 			if (Misc.isMC111OrNewer())

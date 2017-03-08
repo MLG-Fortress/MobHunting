@@ -212,9 +212,7 @@ public class WorldGuardHelper implements Listener {
 			boolean defaultValue) {
 		// if (damager != null) {
 		Player checkedPlayer = null;
-		if (MyPetCompat.isMyPet(damager))
-			checkedPlayer = MyPetCompat.getMyPetOwner(damager);
-		else if (damager instanceof Player)
+		if (damager instanceof Player)
 			checkedPlayer = (Player) damager;
 		if (checkedPlayer != null) {
 			RegionManager regionManager = WorldGuardCompat.getWorldGuardPlugin()
