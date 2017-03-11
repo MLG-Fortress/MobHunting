@@ -398,7 +398,7 @@ public class Messages {
 	 * @param except
 	 */
 	public static void broadcast(String message, Player except) {
-		if (message.isEmpty())
+		if (isEmpty(message))
 			return;
 		Iterator<Player> players = MobHunting.getMobHuntingManager().getOnlinePlayers().iterator();
 		while (players.hasNext()) {
@@ -445,7 +445,7 @@ public class Messages {
 	 * @param args
 	 */
 	public static void playerBossbarMessage(Player player, String text, Object... args) {
-		if (text.isEmpty())
+		if (isEmpty(text))
 			return;
 		if (BarAPICompat.isSupported()) {
 			BarAPICompat.setMessageTime(player, String.format(text, args), 5);
@@ -462,7 +462,7 @@ public class Messages {
 	 * @param message
 	 */
 	public static void playerActionBarMessage(final Player player, final String message) {
-		if (message.isEmpty())
+		if (isEmpty(message))
 			return;
 		if (TitleManagerCompat.isSupported()) {
 			TitleManagerCompat.setActionBar(player, message);
@@ -497,6 +497,12 @@ public class Messages {
 			sortedHashMap.put(it, map.get(it));
 		}
 		return sortedHashMap;
+	}
+
+	private static boolean isEmpty(String message)
+	{
+		message = ChatColor.stripColor(message);
+		return message.isEmpty();
 	}
 
 }
