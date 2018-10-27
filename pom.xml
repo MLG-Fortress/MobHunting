@@ -34,7 +34,7 @@
 		<barapi.version>3.4</barapi.version>
 		<titlemanager.version>2.0.0</titlemanager.version>
 
-		<slf4j.version>1.7.21</slf4j.version>
+		<slf4j.version>1.7.25</slf4j.version>
 		<slf4j-log4j.jar.version>slf4j-log4j12-1.7.21.jar</slf4j-log4j.jar.version>
 
 		<mythicmobsold.jar.version>MythicMobs-2.5.1.jar</mythicmobsold.jar.version>
